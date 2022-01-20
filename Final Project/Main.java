@@ -296,7 +296,6 @@ class Node {
 
     public void printDistances()
     {
-        System.out.println("-----------------");
         System.out.println(this.data + " : ");
         for(int i = 0; i < 10; i++)
         {
@@ -305,7 +304,7 @@ class Node {
                 System.out.println(this.data + " -> " + p.getS() + " : " + p.getF());
             }
         }
-        System.out.println("-----------------");
+        System.out.println();
     }
 }
 
@@ -407,5 +406,38 @@ public class Main {
             graph.getNode(v).getEdges().pushBackEdge(new Edge(u, w));
         }
         graph.dijkstraOnAll();
+        String com = "";
+        while(true)
+        {
+            com = input.nextLine();
+            if(com.equals("exit"))
+            {
+                break;
+            }
+            if(com.equals("test"))
+            {
+                graph.testGraph();
+            }
+            if(com.equals("dist"))
+            {
+                graph.printAllDistances();
+            }
+            else
+            {
+                if(com.split(" ").length == 2)
+                {
+                    if(com.split(" ")[0].equals("join"))
+                    {
+                        int num = Integer.parseInt(com.split(" ")[1]);   
+
+                    }
+                    else if(com.split(" ")[0].equals("left"))
+                    {
+                        int num = Integer.parseInt(com.split(" ")[1]);
+
+                    }
+                }
+            }
+        }
     }
 }
