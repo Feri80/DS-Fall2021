@@ -8,11 +8,14 @@ class Graph {
     private ArrayList<ArrayList<Boolean>> marks;
     private Node root;
     private int size;
+    private Node ans;
+    private ArrayList<Node> joined;
+    public static final int MOD = 31;
 
     public Graph() {
         this.nodes = new ArrayList<>();
         this.marks = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < Graph.MOD; i++) {
             nodes.add(new ArrayList<Node>());
             marks.add(new ArrayList<Boolean>());
         }
@@ -23,11 +26,11 @@ class Graph {
     }
 
     public static int getHashCodeByNode(Node node) {
-        return node.getData() % 10;
+        return node.getData() % Graph.MOD;
     }
 
     public static int getHashCodeByNum(int num) {
-        return num % 10;
+        return num % Graph.MOD;
     }
 
     public Node getNode(int num) {
@@ -105,9 +108,25 @@ class Graph {
         }
     }
 
+    public Node getAns() {
+        return ans;
+    }
+
+    public ArrayList<Node> getJoined() {
+        return joined;
+    }
+
+    public void setAns(Node ans) {
+        this.ans = ans;
+    }
+
+    public void setJoined(ArrayList<Node> joined) {
+        this.joined = joined;
+    }
+
     public void resetMarks() 
     {
-        for (int i = 0; i < 10; i++) 
+        for (int i = 0; i < Graph.MOD; i++) 
         {
             for(int j = 0; j < this.marks.get(i).size(); j++)
             {
@@ -122,7 +141,7 @@ class Graph {
         Pii pt = new Pii(0, s.getData());
         pq.add(pt);
         s.getDistances().get(getHashCodeByNode(s)).add(pt);
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < Graph.MOD; i++)
         {
             for(Node node : nodes.get(i))
             {
@@ -172,6 +191,16 @@ class Graph {
         this.resetMarks();
         dfs(this.root, 2);
         System.out.println("--------------------------------------------------------");
+    }
+
+    public void joinPerson(int num)
+    {
+        
+    }
+
+    public void leftPerson(int num)
+    {
+
     }
 }
 
@@ -254,7 +283,7 @@ class Node {
         this.data = data;
         this.edges = new Adj();
         this.dist = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < Graph.MOD; i++) {
             this.dist.add(new ArrayList<Pii>());
         }
     }
@@ -297,7 +326,7 @@ class Node {
     public void printDistances()
     {
         System.out.println(this.data + " : ");
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < Graph.MOD; i++)
         {
             for(Pii p : this.dist.get(i))
             {
@@ -428,13 +457,13 @@ public class Main {
                 {
                     if(com.split(" ")[0].equals("join"))
                     {
-                        int num = Integer.parseInt(com.split(" ")[1]);   
-
+                        int num = Integer.parseInt(com.split(" ")[1]);
+                        graph.joinPerson(num);
                     }
                     else if(com.split(" ")[0].equals("left"))
                     {
                         int num = Integer.parseInt(com.split(" ")[1]);
-
+                        graph.leftPerson(num);
                     }
                 }
             }
