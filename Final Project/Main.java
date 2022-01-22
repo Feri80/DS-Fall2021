@@ -8,7 +8,7 @@ class Graph {
     private ArrayList<ArrayList<Boolean>> marks;
     private Node root;
     private int size;
-    private Node ans;
+    private ArrayList<Node> ans;
     private ArrayList<Node> joined;
     public static final int MOD = 31;
 
@@ -19,6 +19,8 @@ class Graph {
             nodes.add(new ArrayList<Node>());
             marks.add(new ArrayList<Boolean>());
         }
+        this.ans = new ArrayList<>();
+        this.joined = new ArrayList<>();
     }
 
     public ArrayList<ArrayList<Boolean>> getMarks() {
@@ -86,9 +88,35 @@ class Graph {
         {   
             u.printDistances();
         }
-        else
+        else if(kind == 3)
         {
-
+            int dif = 0;
+            for(int i = 0; i < this.joined.size() - 1; i++)
+            {
+                int x = this.joined.get(i).getData();
+                int y = this.joined.get(this.joined.size() - 1).getData();
+                dif += Math.abs(u.getDist(x) - u.getDist(y));
+            }
+            u.setDif(u.getDif() + dif);
+        }
+        else if(kind == 4)
+        {
+            if(this.ans.size() == 0)
+            {
+                this.ans.add(u);
+            }
+            else
+            {
+                if(u.getDif() < this.ans.get(0).getDif())
+                {   
+                    this.ans.clear();
+                    this.ans.add(u);
+                }
+                else if(u.getDif() == this.ans.get(0).getDif())
+                {
+                    this.ans.add(u);
+                }
+            }
         }
         for(int i = 0; i < u.getEdges().getSize(); i++) 
         {
@@ -195,12 +223,39 @@ class Graph {
 
     public void joinPerson(int num)
     {
-        
+        Node node = this.getNode(num);
+        if(!joined.contains(node))
+        {
+            if(joined.size() == 0)
+            {
+                joined.add(node);
+                ans.add(node);
+                System.out.println(node.getData());
+            }
+            else
+            {
+                joined.add(node);
+                this.resetMarks();
+                this.dfs(this.root, 3);
+                this.ans.clear();
+                this.resetMarks();
+                this.dfs(this.root, 4);
+                for(Node ansNode : this.ans)
+                {
+                    System.out.print(ansNode.getData() + " ");
+                }
+                System.out.println("[" + ans.get(0).getDif() + "]");
+            }
+        }
+        else
+        {
+            System.out.println("This Node Already Joined");
+        }
     }
 
     public void leftPerson(int num)
     {
-
+        Node node = this.getNode(num);
     }
 }
 
@@ -278,6 +333,7 @@ class Node {
     private int data;
     private Adj edges;
     private ArrayList<ArrayList<Pii>> dist; // first : node distance        second : node num
+    private int dif;
 
     public Node(int data) {
         this.data = data;
@@ -286,6 +342,7 @@ class Node {
         for (int i = 0; i < Graph.MOD; i++) {
             this.dist.add(new ArrayList<Pii>());
         }
+        this.dif = 0;
     }
 
     public int getData() {
@@ -294,6 +351,14 @@ class Node {
 
     public Adj getEdges() {
         return edges;
+    }
+
+    public int getDif() {
+        return dif;
+    }
+
+    public void setDif(int dif) {
+        this.dif = dif;
     }
 
     public ArrayList<ArrayList<Pii>> getDistances() {
