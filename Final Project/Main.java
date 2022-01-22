@@ -118,6 +118,17 @@ class Graph {
                 }
             }
         }
+        else if(kind == 5)
+        {
+            int dif = 0;
+            for(int i = 0; i < this.joined.size() - 1; i++)
+            {
+                int x = this.joined.get(i).getData();
+                int y = this.joined.get(this.joined.size() - 1).getData();
+                dif -= Math.abs(u.getDist(x) - u.getDist(y));
+            }
+            u.setDif(u.getDif() + dif);
+        }
         for(int i = 0; i < u.getEdges().getSize(); i++) 
         {
             Node v = this.getNode(u.getEdges().getEdge(i).getDestination());
@@ -230,7 +241,7 @@ class Graph {
             {
                 joined.add(node);
                 ans.add(node);
-                System.out.println(node.getData());
+                System.out.println(node.getData() + " [0]");
             }
             else
             {
@@ -256,6 +267,40 @@ class Graph {
     public void leftPerson(int num)
     {
         Node node = this.getNode(num);
+        if(joined.contains(node))
+        {
+            if(joined.size() == 1)
+            {
+                joined.clear();
+                ans.clear();
+                System.out.println(-1);
+            }
+            else
+            {
+                joined.remove(node);
+                joined.add(node);
+                this.resetMarks();
+                this.dfs(this.root, 5);
+                this.ans.clear();
+                this.joined.remove(node);
+                this.resetMarks();
+                this.dfs(this.root, 4);
+                if(joined.size() == 1)
+                {
+                    ans.clear();
+                    ans.add(joined.get(0));
+                }
+                for(Node ansNode : this.ans)
+                {
+                    System.out.print(ansNode.getData() + " ");
+                }
+                System.out.println("[" + ans.get(0).getDif() + "]");
+            }
+        }
+        else
+        {
+            System.out.println("This Node Already Left");
+        }
     }
 }
 
