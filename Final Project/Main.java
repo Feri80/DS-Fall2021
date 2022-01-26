@@ -75,20 +75,20 @@ class Graph {
                 break;
             }
         }
-        this.marks.get(getHashCodeByNode(u)).set(t, true);
-        if(kind == 0) 
+        this.marks.get(getHashCodeByNode(u)).set(t, true); // Mark
+        if(kind == 0) // Test
         {
             System.out.print(u.getData() + " ");
         } 
-        else if(kind == 1) 
+        else if(kind == 1) // Dijkstra
         {
             dijkstra(u);
         } 
-        else if(kind == 2)
+        else if(kind == 2) // Dijkstra Test
         {   
             u.printDistances();
         }
-        else if(kind == 3)
+        else if(kind == 3) // Set New Diff For Join
         {
             int dif = 0;
             for(int i = 0; i < this.joined.size() - 1; i++)
@@ -99,7 +99,7 @@ class Graph {
             }
             u.setDif(u.getDif() + dif);
         }
-        else if(kind == 4)
+        else if(kind == 4) // Update Ans 
         {
             if(this.ans.size() == 0)
             {
@@ -118,7 +118,7 @@ class Graph {
                 }
             }
         }
-        else if(kind == 5)
+        else if(kind == 5) // Set New Diff For Left
         {
             int dif = 0;
             for(int i = 0; i < this.joined.size() - 1; i++)
@@ -129,7 +129,7 @@ class Graph {
             }
             u.setDif(u.getDif() + dif);
         }
-        for(int i = 0; i < u.getEdges().getSize(); i++) 
+        for(int i = 0; i < u.getEdges().getSize(); i++) // DFS On Any Adj If Not Marked
         {
             Node v = this.getNode(u.getEdges().getEdge(i).getDestination());
             int j = 0;
@@ -194,9 +194,9 @@ class Graph {
         }
         while(pq.size() > 0)
         {
-            Pii p = pq.remove();
+            Pii p = pq.remove(); // Get Current Nearest Node
             Node u = this.getNode(p.getS());
-            for(int i = 0; i < u.getEdges().getSize(); i++)
+            for(int i = 0; i < u.getEdges().getSize(); i++) // Relax For Each Edge
             {
                 int w = u.getEdges().getEdge(i).getWeight();
                 Node v = this.getNode(u.getEdges().getEdge(i).getDestination());
@@ -247,11 +247,11 @@ class Graph {
             {
                 joined.add(node);
                 this.resetMarks();
-                this.dfs(this.root, 3);
+                this.dfs(this.root, 3); // Set New Diff For Any Node
                 this.ans.clear();
                 this.resetMarks();
-                this.dfs(this.root, 4);
-                for(Node ansNode : this.ans)
+                this.dfs(this.root, 4); // Update Ans By New Diffs
+                for(Node ansNode : this.ans) // Print Ans
                 {
                     System.out.print(ansNode.getData() + " ");
                 }
@@ -280,17 +280,17 @@ class Graph {
                 joined.remove(node);
                 joined.add(node);
                 this.resetMarks();
-                this.dfs(this.root, 5);
+                this.dfs(this.root, 5); // Set New Diff For Any Node
                 this.ans.clear();
                 this.joined.remove(node);
                 this.resetMarks();
-                this.dfs(this.root, 4);
+                this.dfs(this.root, 4); // Update Ans
                 if(joined.size() == 1)
                 {
                     ans.clear();
                     ans.add(joined.get(0));
                 }
-                for(Node ansNode : this.ans)
+                for(Node ansNode : this.ans) // Print Ans
                 {
                     System.out.print(ansNode.getData() + " ");
                 }
